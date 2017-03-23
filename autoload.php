@@ -26,3 +26,30 @@ function Zf1Loader($name)
 }
 
 spl_autoload_register("Zf1Loader");
+
+/*
+ *  DronePHP Autoloader
+ */
+
+function DronePHPLoader($name)
+{
+    $nms = explode("_", $name);
+    $parsed_nms = "";
+
+    for ($i = 0; $i < count($nms) - 1; $i++)
+    {
+        $parsed_nms .= "/" . $nms[$i];
+    }
+
+    $vendor_nms = strtolower(array_shift($nms));
+    $package = array_shift($nms);
+
+    $file = count($nms) ? array_pop($nms) : $package;
+
+    $class = dirname(__FILE__) ."/vendor/fermius/dronephp/src". $parsed_nms . "/" . $name . ".php";
+
+    if (file_exists($class))
+        include $class;
+}
+
+spl_autoload_register("DronePHPLoader");
